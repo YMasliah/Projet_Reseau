@@ -1,0 +1,19 @@
+########################################################################
+
+# avec sudo ansible-playbook -c local config.vm3.yml
+---
+- hosts: localhost
+  tasks:
+    - shell: while ip route del default; do true;done
+    - shell: nmcli connection del "Connexion filaire 1"
+      ignore_errors: True
+    - shell: nmcli connection del "ansible-eth1"
+      ignore_errors: True
+    - shell: nmcli connection del "Connexion filaire 2"
+      ignore_errors: True
+    - shell: nmcli connection del "ansible-eth2"
+      ignore_errors: True
+    - shell: nmcli connection add ifname eth1 con-name ansible-eth1 type ethernet ip4 172.16.2.163/28
+    - shell: nmcli connection add ifname eth2 con-name ansible-eth2 type ethernet ip4 172.16.2.183/28
+    - sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes state=present reload=yes
+          
