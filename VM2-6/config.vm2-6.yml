@@ -4,8 +4,8 @@
 ---
 - hosts: localhost
   tasks:
-#    - copy: src="resolv.conf" dest="/etc/resolv.conf" owner=root group=root mode=644
-#    - apt: name=radvd state=latest
+    - copy: src="resolv.conf" dest="/etc/resolv.conf" owner=root group=root mode=644
+    - apt: name=radvd state=latest
     - shell: while ip route del default; do true;done
     - shell: nmcli connection del "Connexion filaire 1"
       ignore_errors: True
@@ -19,7 +19,7 @@
     - shell: nmcli connection add ifname eth2 con-name ansible-eth2 type ethernet ip6 fc00:1234:2::26/64 
     - sysctl: name="net.ipv6.conf.all.forwarding=1" value=1 sysctl_set=yes state=present reload=yes
     
-#    - copy: src="radvd.conf" dest="/etc/radvd.conf" owner=root group=root mode=644
-#    - service: name=radvd state=started
-#    - service: name=radvd state=stopped
-#    - service: name=radvd state=started
+    - copy: src="radvd.conf" dest="/etc/radvd.conf" owner=root group=root mode=644
+    - service: name=radvd state=started
+    - service: name=radvd state=stopped
+    - service: name=radvd state=started
