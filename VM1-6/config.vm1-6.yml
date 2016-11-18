@@ -9,10 +9,14 @@
       ignore_errors: True
     - shell: nmcli connection del "ansible-eth1"
       ignore_errors: True
+    - shell: nmcli connection del "Connexion filaire 2"
+      ignore_errors: True
+    - shell: nmcli connection del "ansible-eth2"
+      ignore_errors: True
     - shell: nmcli connection add ifname eth1 con-name ansible-eth1 type ethernet ip4 172.16.2.156/28 
-    - shell: nmcli connection add ifname eth2 con-name ansible-eth2 type ethernet ip6 fc00:1234:2::16/64
-    - shell: ip route add 172.16.2.128/28 dev eth1 
-    - shell: ip route add 172.16.2.160/28 dev eth1
-    - shell: ip route add 172.16.2.176/28 dev eth1
-    - shell: ip -6 route add fc00:1234:2::/64 dev eth2
+    - shell: nmcli connection add ifname eth2 con-name ansible-eth2 type ethernet ip6 fc00:1234:1::16/64 
+    - shell: ip route add 172.16.2.128/28 via 172.16.2.151
+    - shell: ip route add 172.16.2.160/28 via 172.16.2.151
+    - shell: ip route add 172.16.2.176/28 via 172.16.2.151
+    - shell: ip -6 route add fc00:1234:2::/64 via fc00:1234:1::26
 
