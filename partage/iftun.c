@@ -46,7 +46,7 @@ void recup_paquet(src,dst){
 	if(read(src, buffer, 1000) <0) return; 
 	
 	if(write(dst, buffer, 1000)<0)return;  
-
+	printf("\n\n");
 }
 
 int main (int argc, char** argv){
@@ -57,9 +57,9 @@ int main (int argc, char** argv){
 	int fd = tun_alloc(nomtun);
 	if(fd<0)return 1;
 
-	recup_paquet(fd,1);
+	
 
-	while(1);
+	while(1){recup_paquet(fd,1);}
 
   return 0;
 }
