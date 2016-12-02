@@ -7,6 +7,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
 #include "iftun.h"
 #include "ext_in.h"
 #include "ext_out.h"
@@ -21,11 +22,12 @@ int main(int argc, char *argv[]){
 	fd = tun_alloc(nomtun);
 	if(fd<0)return 1;
 	
-	//fichier script a lancer avec sudo si pas lancer dans le C
+	printf("tun up == %d\n", fd);
+	system("bash configure-tun.sh");
 	
 	if (fork() == 0){
 		printf("mode serveur\n");
-		ext_out(fd);
+		ext_out();
 	}
 	else{
 		printf("j'att l'appuis d'une touche pour lancer le client");
