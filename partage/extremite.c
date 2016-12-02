@@ -11,33 +11,20 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "extremite.h"
 
 /* taille maximale des lignes */
 #define MAXLIGNE 80
 #define CIAO "Au revoir ...\n"
 
-void ext-outmessage(int f, char* hote, char* port);
-void ext-in();
-void ext-out();
-
-int main(int argc, char *argv[]){
-
-	ext-out();
-	ext-in();
-	return EXIT_SUCCESS;
-}
-#define MAXLIGNE 64
-
-int ext-in()
-{
-  char * hote; /* nom d'hôte du  serveur */   
+void ext_in(int fd, char* hote)
+{ 
   char * port; /* port TCP du serveur */   
   char ip[NI_MAXHOST]; /* adresse IPv4 en notation pointée */
   struct addrinfo *resol; /* struct pour la résolution de nom */
   int s; /* descripteur de socket */
 	int ipv4_6 = 0,i; /*0 = ipv4, 1 = ipv6*/
-
-  hote="172.16.2.1"; /* nom d'hôte du  serveur */   
+   
   port="123"; /* port TCP du serveur */   
 
 	for(i=0;i<strlen(hote);i++)
@@ -94,19 +81,21 @@ int ext-in()
     /* recopier dans la socket ce qui est lu dans stdin */
 
     /* réception des données */
-    lu = recv(1,tampon,MAXLIGNE,0); /* bloquant */
+    lu = recv(fd,tampon,MAXLIGNE,0); /* bloquant */
     
     if (lu == 0 ) {
       fprintf(stderr,"Connexion terminée par l'hôte distant\n");
       break; /* On sort de la boucle infinie */
     }
     tampon[lu] = '\0';
-    printf("reçu: %s",tampon);
+    
+    /* echo vers le client */
+    send(s, tampon,strlen(tampon),0);
     
     while(lu==MAXLIGNE){
-    	lu = recv(s,tampon,MAXLIGNE,MSG_DONTWAIT);
+    	lu = recv(fd,tampon,MAXLIGNE,MSG_DONTWAIT);
       tampon[lu] = '\0';
-    	printf("%s",tampon);
+    	send(s,tampon,strlen(tampon),0);
     }
     
     if ( fini == 1 )
@@ -130,10 +119,7 @@ int ext-in()
   fprintf(stderr,"Fin de la session.\n");
 }
 
-
-
-
-void ext-out()
+void ext_out()
 {
   int s,n; /* descripteurs de socket */
   int len,on; /* utilitaires divers */
@@ -207,22 +193,19 @@ setsockopt(s,IPPROTO_IPV6,IPV6_V6ONLY,&x,sizeof(x));
       fprintf(stderr,"accept! (%i) ip=%s port=%s\n",n,hotec,portc);
     }
     /* traitement */
-    ext-out(n,hotec,portc);
+    ext_outmessage(n,hotec,portc);
   }
   return;
 }
 
 /* echo des messages reçus (le tout via le descripteur f) */
-void ext-outmessage(int f, char* hote, char* port)
+void ext_outmessage(int f, char* hote, char* port)
 {
   ssize_t lu; /* nb d'octets reçus */
   char msg[MAXLIGNE+1]; /* tampons pour les communications */ 
   char tampon[MAXLIGNE+1]; 
   int pid = getpid(); /* pid du processus */
   int compteur=0;
-  
-  /* message d'accueil */
-  printf("Bonjour %s! (vous utilisez le port %s)\n",hote,port);
   
   do { /* Faire echo et logguer */
     lu = recv(f,tampon,MAXLIGNE,0);
@@ -231,14 +214,13 @@ void ext-outmessage(int f, char* hote, char* port)
         compteur++;
         tampon[lu] = '\0';
         /* log */
-        fprintf(stderr,"[%s:%s](%i): %3i :%s",hote,port,pid,compteur,tampon);
-        printf("> %s",tampon);
+        snprintf(msg,MAXLIGNE,"%s",tampon);
+        /* echo vers le client */
+        send(1, msg, strlen(msg),0);
       } else {
         break;
       }
   } while ( 1 );
-       
-  /* le correspondant a quitté */
+
   close(f);
-  fprintf(stderr,"[%s:%s](%i): Terminé.\n",hote,port,pid);
 }

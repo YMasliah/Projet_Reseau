@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <linux/if.h>
 #include <linux/if_tun.h>
+#include "iftun.h"
 
 int tun_alloc(char *dev)
 {
@@ -39,7 +40,7 @@ int tun_alloc(char *dev)
   return fd;
 }      
 
-void recup_paquet(src,dst){
+void recup_paquet(int src,int dst){
 	char buffer[1000];
 	ssize_t r;
 	
@@ -49,17 +50,19 @@ void recup_paquet(src,dst){
 	printf("\n\n");
 }
 
+
+/*
 int main (int argc, char** argv){
 
 	char nomtun[128];
 	strcpy(nomtun, argv[1]);
 
 	int fd = tun_alloc(nomtun);
-	if(fd<0)return 1;
-
-	
+	if(fd<0)return 1;	
 
 	while(1){recup_paquet(fd,1);}
 
   return 0;
 }
+
+*/
