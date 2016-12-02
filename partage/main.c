@@ -7,6 +7,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
 #include "iftun.h"
 #include "ext_in.h"
 #include "ext_out.h"
@@ -20,11 +21,21 @@ int main(int argc, char *argv[]){
 	
 	if (atoi(argv[1]) == 1){
 		printf("mode serveur\n");
+
+		fd = tun_alloc(nomtun);
+		
+		printf("tun up == %d\n", fd);
+		system("bash configure-tun.sh");
+
 		ext_out();
 	}
 	else{
 		printf("mode client\n");
 		fd = tun_alloc(nomtun);
+		
+		printf("tun up == %d\n", fd);
+		system("bash configure-tun.sh");
+
 		if(fd<0)return 1;
 		strcpy(hote, argv[2]);	
 		ext_in(fd ,hote);
