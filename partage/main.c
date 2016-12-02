@@ -8,7 +8,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include "iftun.h"
-#include "extremite.h"
+#include "ext_in.h"
+#include "ext_out.h"
 
 // hote est soit VM3-6 ipv6 soit VM1-6 ipv6
 

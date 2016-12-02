@@ -81,21 +81,19 @@ void ext_in(int fd, char* hote)
     /* recopier dans la socket ce qui est lu dans stdin */
 
     /* réception des données */
-    lu = recv(fd,tampon,MAXLIGNE,0); /* bloquant */
+    lu = recv(s,tampon,MAXLIGNE,0); /* bloquant */
     
     if (lu == 0 ) {
       fprintf(stderr,"Connexion terminée par l'hôte distant\n");
       break; /* On sort de la boucle infinie */
     }
     tampon[lu] = '\0';
-    
-    /* echo vers le client */
-    send(s, tampon,strlen(tampon),0);
+    printf("reçu: %s",tampon);
     
     while(lu==MAXLIGNE){
-    	lu = recv(fd,tampon,MAXLIGNE,MSG_DONTWAIT);
+    	lu = recv(s,tampon,MAXLIGNE,MSG_DONTWAIT);
       tampon[lu] = '\0';
-    	send(s,tampon,strlen(tampon),0);
+    	printf("%s",tampon);
     }
     
     if ( fini == 1 )
@@ -195,7 +193,6 @@ setsockopt(s,IPPROTO_IPV6,IPV6_V6ONLY,&x,sizeof(x));
     /* traitement */
     ext_outmessage(n,hotec,portc);
   }
-  return;
 }
 
 /* echo des messages reçus (le tout via le descripteur f) */
