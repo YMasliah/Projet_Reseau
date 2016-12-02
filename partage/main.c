@@ -18,14 +18,19 @@ int main(int argc, char *argv[]){
 	char nomtun[128] = "tun0";
 	int fd;
 	
-	if (atoi(argv[1]) == 1){
+	fd = tun_alloc(nomtun);
+	if(fd<0)return 1;
+	
+	//fichier script a lancer avec sudo si pas lancer dans le C
+	
+	if (fork() == 0){
 		printf("mode serveur\n");
-		ext_out();
+		ext_out(fd);
 	}
 	else{
+		printf("j'att l'appuis d'une touche pour lancer le client");
+		getchar();
 		printf("mode client\n");
-		fd = tun_alloc(nomtun);
-		if(fd<0)return 1;
 		strcpy(hote, argv[2]);	
 		ext_in(fd ,hote);
 	}

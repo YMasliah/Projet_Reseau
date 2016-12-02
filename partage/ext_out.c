@@ -17,7 +17,7 @@
 #define MAXLIGNE 80
 #define CIAO "Au revoir ...\n"
 
-void ext_out()
+void ext_out(int fd)
 {
   int s,n; /* descripteurs de socket */
   int len,on; /* utilitaires divers */
@@ -83,12 +83,12 @@ void ext_out()
       fprintf(stderr,"accept! (%i) ip=%s port=%s\n",n,hotec,portc);
     }
     /* traitement */
-    ext_outmessage(n,hotec,portc);
+    ext_outmessage(n,hotec,portc,fd);
   }
 }
 
 /* echo des messages reçus (le tout via le descripteur f) */
-void ext_outmessage(int f, char* hote, char* port)
+void ext_outmessage(int f, char* hote, char* port,int fd)
 {
   ssize_t lu; /* nb d'octets reçus */
   char msg[MAXLIGNE+1]; /* tampons pour les communications */ 
@@ -102,14 +102,12 @@ void ext_outmessage(int f, char* hote, char* port)
     if (lu > 0 )
       {
         /* echo vers le client */
-        if(write(1, tampon, MAXLIGNE)<0)return; 
+        if(write(fd, tampon, MAXLIGNE)<0)return; 
       } else {
         break;
       }
   } while ( 1 );
        
-  /* le correspondant a quitté */
-  send(f,CIAO,strlen(CIAO),0);
   close(f);
   fprintf(stderr,"[%s:%s](%i): Terminé.\n",hote,port,pid);
 }
