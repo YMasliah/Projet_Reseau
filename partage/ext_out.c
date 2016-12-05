@@ -14,7 +14,7 @@
 #include "ext_out.h"
 
 /* taille maximale des lignes */
-#define MAXLIGNE 80
+#define MAXLIGNE 1024
 #define CIAO "Au revoir ...\n"
 
 void ext_out(int fd)
@@ -91,17 +91,15 @@ void ext_out(int fd)
 void ext_outmessage(int f, char* hote, char* port,int fd)
 {
   ssize_t lu; /* nb d'octets reçus */
-  char msg[MAXLIGNE+1]; /* tampons pour les communications */ 
   char tampon[MAXLIGNE+1]; 
-  int pid = getpid(); /* pid du processus */
-  int compteur=0;
+
   
   
   do { /* Faire echo et logguer */
-    lu = recv(f,tampon,MAXLIGNE,0);
+    lu = read(f,tampon,MAXLIGNE);
     if (lu > 0 )
       {
-        /* echo vers le client */
+        /* echo vers tun0 */
         if(write(fd, tampon, MAXLIGNE)<0)return; 
       } else {
         break;
@@ -109,5 +107,4 @@ void ext_outmessage(int f, char* hote, char* port,int fd)
   } while ( 1 );
        
   close(f);
-  fprintf(stderr,"[%s:%s](%i): Terminé.\n",hote,port,pid);
 }

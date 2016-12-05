@@ -28,7 +28,7 @@ int tun_alloc(char *dev)
    *
    *        IFF_NO_PI - Do not provide packet information  
    */ 
-  ifr.ifr_flags = IFF_TUN; 
+  ifr.ifr_flags = IFF_TUN | IFF_NO_PI; 
   if( *dev )
     strncpy(ifr.ifr_name, dev, IFNAMSIZ);
 
@@ -41,12 +41,12 @@ int tun_alloc(char *dev)
 }      
 
 void recup_paquet(int src,int dst){
-	char buffer[1000];
+	char buffer[1024];
 	ssize_t r;
 	
-	if(read(src, buffer, 1000) <0) return; 
+	if(read(src, buffer, 1024) <0) return; 
 	
-	if(write(dst, buffer, 1000)<0)return;  
+	if(write(dst, buffer, 1024)<0)return;  
 	printf("\n\n");
 }
 

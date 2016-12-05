@@ -55,9 +55,6 @@ void ext_in(int fd, char* hote)
   freeaddrinfo(resol); /* /!\ Libération mémoire */
 
   /* Session */
-  char tampon[MAXLIGNE + 3]; /* tampons pour les communications */
-  ssize_t lu;
-  int fini=0;
   while( 1 ) { 
     /* Jusqu'à fermeture de la socket (ou de stdin)     */
     /* recopier à l'écran ce qui est lu dans la socket  */
