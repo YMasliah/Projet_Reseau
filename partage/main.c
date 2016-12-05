@@ -19,6 +19,8 @@ int main(int argc, char *argv[]){
 	char nomtun[128] = "tun0";
 	int fd;
 	
+	strcpy(hote, argv[1]);
+	
 	fd = tun_alloc(nomtun);
 	if(fd<0)return 1;
 	
@@ -27,13 +29,12 @@ int main(int argc, char *argv[]){
 	
 	if (fork() == 0){
 		printf("mode serveur\n");
-		ext_out();
+		ext_out(fd);
 	}
 	else{
-		printf("j'att l'appuis d'une touche pour lancer le client");
+		printf("j'att l'appuis d'une touche pour lancer le client\n");
 		getchar();
 		printf("mode client\n");
-		strcpy(hote, argv[2]);	
 		ext_in(fd ,hote);
 	}
 	return EXIT_SUCCESS;
