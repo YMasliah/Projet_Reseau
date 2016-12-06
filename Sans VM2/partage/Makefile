@@ -1,5 +1,5 @@
-tun64d : main.o iftun.o ext_out.o ext_in.o conf_manager.o
-	gcc -o tun64d main.o iftun.o ext_out.o ext_in.o conf_manager.o
+tunnel64d : main.o iftun.o ext_out.o ext_in.o conf_manager.o
+	gcc -o tunnel64d main.o iftun.o ext_out.o ext_in.o conf_manager.o
 
 main.o :
 	gcc -o main.o -c main.c
@@ -22,5 +22,5 @@ clean :
 	rm ext_out.o
 	rm ext_in.o
 	rm conf_manager.o
-	rm tun64d
+	rm tunnel64d
 	rm configure-tun.sh

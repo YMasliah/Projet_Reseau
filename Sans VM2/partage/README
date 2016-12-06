@@ -1,0 +1,20 @@
+
+tunnel64d est programme qui établit un pont entre deux réseaux IPv4 aà travers un réseaux IPv6.
+
+Usage :
+	tunnel64d fichier_de_configuration
+
+	où l'argument est le chemin vers un fichier de configuration eu format suivant :
+
+	# interface tun
+	tun=nom de l'interface
+	# adresse locale 
+	inip=ip de l'interface
+	inport=port local du tunnel
+	options=IFF_TUN | IFF_NO_PI
+	# adresse distante
+	outip=ip de l'autre extrémité du tunnel
+	outport= port de l'autre extrémité du tunnel
+	# reseaux distants
+	netin=ip du reseau local
+	netout=ip du reseau distant

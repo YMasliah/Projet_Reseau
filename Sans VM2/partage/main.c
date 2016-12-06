@@ -46,7 +46,7 @@ int main(int argc, char *argv[]){
 		ext_out(fd,portIn);
 	}
 	else{
-		printf("j'att l'appuis d'une touche pour lancer le client\n");
+		printf("j'attends l'appuis d'une touche pour lancer le client\n");
 		getchar();
 		printf("mode client\n");
 		ext_in(fd ,ipServeur , portServeur);
