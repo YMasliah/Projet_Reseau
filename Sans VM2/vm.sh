@@ -1,15 +1,13 @@
 VBoxManage setproperty machinefolder "/virtualbox/tmp"
 cd VM1 
-vagrant up &
-cd ../VM2 
-vagrant up &
+vagrant $* &
 cd ../VM3 
-vagrant up &
+vagrant $* &
 cd ../VM1-6 
-vagrant up & 
+vagrant $* & 
 cd ../VM2-6  
-vagrant up & 
+vagrant $* & 
 cd ../VM3-6  
-vagrant up & 
+vagrant $* & 
 cd ../
 
