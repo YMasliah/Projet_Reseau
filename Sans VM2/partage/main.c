@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
 	}
 	
 	readConf(configFile, nomTun, ipTun, portIn, optionsTun, ipServeur,portServeur, netin, netout);
-	printf("%s  %s", netin, netout);
+
 	writeScript("configure-tun.sh", nomTun, ipTun, netin, netout);
 
 	fd = tun_alloc(nomTun,optionsTun);
