@@ -18,17 +18,17 @@
 
 #define MAXLIGNE 64
 
-void ext_in(int fd, char* hote)
+void ext_in(int fd, char* ipServeur, char* port)
 {  
-  char * port; /* port TCP du serveur */   
+//  char * port; /* port TCP du serveur */   
   char ip[NI_MAXHOST]; /* adresse IPv4 en notation pointée */
   struct addrinfo *resol; /* struct pour la résolution de nom */
   int s; /* descripteur de socket */
   
-  port="123"; /* port TCP du serveur */   
+//  port="123"; /* port TCP du serveur */   
 
   /* Résolution de l'hôte */
-  if ( getaddrinfo(hote,port,NULL, &resol) < 0 ){
+  if ( getaddrinfo(ipServeur,port,NULL, &resol) < 0 ){
     perror("résolution adresse");
     exit(2);
   }
@@ -47,7 +47,7 @@ void ext_in(int fd, char* hote)
 
   /* Connexion */
   fprintf(stderr,"Essai de connexion à %s (%s) sur le port %s\n\n",
-	  hote,ip,port);
+	  ipServeur,ip,port);
   if (connect(s,resol->ai_addr,sizeof(struct sockaddr_in6))<0) {
     perror("connexion");
     exit(4);
