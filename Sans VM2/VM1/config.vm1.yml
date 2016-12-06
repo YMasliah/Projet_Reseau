@@ -1,6 +1,6 @@
 ########################################################################
 
-# avec sudo ansible-playbook -c local config.vm1.yml
+# avec sudo ansible-playbook -c local /vagrant/config.vm1.yml
 ---
 - hosts: localhost
   tasks:

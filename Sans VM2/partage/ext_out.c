@@ -17,7 +17,7 @@
 #define MAXLIGNE 1024
 #define CIAO "Au revoir ...\n"
 
-void ext_out(int fd)
+void ext_out(int fd,char* port)
 {
   int s,n; /* descripteurs de socket */
   int len,on; /* utilitaires divers */
@@ -26,10 +26,11 @@ void ext_out(int fd)
                            PF_INET6,SOCK_STREAM,0, /* IP mode connecté */
                            0,NULL,NULL,NULL};
   struct sockaddr_in6 client; /* adresse de socket du client */
-  char * port; /* Port pour le service */
+//  char * port; /* Port pour le service */
   int err; /* code d'erreur */
   
-  port="123"; fprintf(stderr,"Ecoute sur le port %s\n",port);
+//  port="123"; 
+	fprintf(stderr,"Ecoute sur le port %s\n",port);
   err = getaddrinfo(NULL,port,&indic,&resol); 
   if (err<0){
     fprintf(stderr,"Résolution: %s\n",gai_strerror(err));

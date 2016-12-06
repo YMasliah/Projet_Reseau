@@ -11,7 +11,7 @@
 #include <linux/if_tun.h>
 #include "iftun.h"
 
-int tun_alloc(char *dev)
+int tun_alloc(char *dev,char* options)
 {
   struct ifreq ifr;
   int fd, err;
