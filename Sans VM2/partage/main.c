@@ -21,7 +21,7 @@
 int main(int argc, char *argv[]){
 	char ipServeur[100], ipTun[100],
 	     nomTun[100],portIn[100],portServeur[100],
-	     optionsTun[100], netin[100], netout[100];
+	     optionsTun[100], net1[100], net2[100];
 	int fd;
 
 	char configFile[100];
@@ -31,9 +31,9 @@ int main(int argc, char *argv[]){
 		return 0;
 	}
 	
-	readConf(configFile, nomTun, ipTun, portIn, optionsTun, ipServeur,portServeur, netin, netout);
+	readConf(configFile, nomTun, ipTun, portIn, optionsTun, ipServeur,portServeur, net1, net2);
 
-	writeScript("configure-tun.sh", nomTun, ipTun, netin, netout);
+	writeScript("configure-tun.sh", nomTun, ipTun, net1, net2);
 
 	fd = tun_alloc(nomTun,optionsTun);
 	if(fd<0)return 1;
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
 	}
 	else{
 		printf("j'attends l'appuis d'une touche pour lancer le client\n");
-		getchar();
+		sleep(5);
 		printf("mode client\n");
 		ext_in(fd ,ipServeur , portServeur);
 	}

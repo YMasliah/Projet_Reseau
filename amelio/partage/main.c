@@ -11,6 +11,7 @@
 #include "iftun.h"
 #include "ext_in.h"
 #include "ext_out.h"
+#include "conf_manager.h"
 
 // hote est soit VM3-6 ipv6 soit VM1-6 ipv6
 // tunnel46d doit donner en argument a main :
@@ -18,20 +19,22 @@
 // il doit aussi ecrire dans le script les routes et ipforward 
 
 int main(int argc, char *argv[]){
-	char ipServeur[100],nomTun[100],portIn[100],portServeur[100],optionsTun[100];
+	char ipServeur[100], ipTun[100],
+	     nomTun[100],portIn[100],portServeur[100],
+	     optionsTun[100], net1[100], net2[100];
 	int fd;
-	
-	if(argc < 6){ 
-		printf("il faut 6 arguments : nomtunnel, options_tunnel, ipv6_serveur, port_serveur, port_out\n ");
+
+	char configFile[100];
+	strcpy(configFile, argv[1]);
+	if(argc != 2){ 
+		printf("il faut 1 argument : fichierDeConfiguration\n ");
 		return 0;
 	}
 	
-	strcpy(nomTun, argv[1]);
-	strcpy(optionsTun, argv[2]);
-	strcpy(ipServeur, argv[3]);
-	strcpy(portServeur, argv[4]);
-	strcpy(portIn, argv[5]);
-	
+	readConf(configFile, nomTun, ipTun, portIn, optionsTun, ipServeur,portServeur, net1, net2);
+
+	writeScript("configure-tun.sh", nomTun, ipTun, net1, net2);
+
 	fd = tun_alloc(nomTun,optionsTun);
 	if(fd<0)return 1;
 	
@@ -43,8 +46,8 @@ int main(int argc, char *argv[]){
 		ext_out(fd,portIn);
 	}
 	else{
-		printf("j'att l'appuis d'une touche pour lancer le client\n");
-		getchar();
+		printf("j'attends l'appuis d'une touche pour lancer le client\n");
+		sleep(5);
 		printf("mode client\n");
 		ext_in(fd ,ipServeur , portServeur);
 	}

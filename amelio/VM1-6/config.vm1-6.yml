@@ -19,6 +19,6 @@
 #    - shell: ip route add 172.16.2.160/28 via 172.16.2.1
 #    - shell: ip route add 172.16.2.176/28 via 172.16.2.1
     - shell: ip -6 route add fc00:1234:2::/64 via fc00:1234:1::26
-    - shell: /mnt/partage/tunnel64d /mnt/partage/tun64VM1-6.conf
+    - shell: /mnt/partage/tunnel64d /mnt/partage/tun64VM1-6.conf &
 #    - sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes state=present reload=yes
     
